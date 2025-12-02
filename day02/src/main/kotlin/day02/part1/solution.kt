@@ -6,24 +6,14 @@ import java.io.BufferedReader
  * @author verwoerd
  * @since 02/12/2025
  */
-fun day02Part1(input: BufferedReader): Any {
-  val cache = mutableMapOf<Long, Boolean>()
-  return input.readLine().split(",").map { it.split("-") }
-    .flatMap { it.checkRange(cache, Long::isFake) }.sum()
-}
+fun day02Part1(input: BufferedReader): Any = input.parseRanges().sumOf { it.checkRange(Long::isFake) }
 
-fun List<String>.checkRange(cache: MutableMap<Long, Boolean>, check: Long.() -> Boolean) : List<Long> {
-  val (start, end) = this
-  val result = mutableListOf<Long>()
-  for (i in start.toLong()..end.toLong()) {
-    if(cache.computeIfAbsent(i) { i.check() }) {
-      result += i
-    }
-  }
-  return result
-}
+fun BufferedReader.parseRanges() = readLine().split(",").map { it.split("-") }
 
-fun Long.isFake() : Boolean {
+fun List<String>.checkRange(check: Long.() -> Boolean): Long =
+  (get(0).toLong()..get(1).toLong()).filter { it.check() }.sum()
+
+fun Long.isFake(): Boolean {
   val str = this.toString()
   val half = str.length / 2
   return str.take(half) == str.drop(half)
