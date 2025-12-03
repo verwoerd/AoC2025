@@ -26,3 +26,4 @@ fun <T: Any> priorityQueueOf(comparator: Comparator<T>, vararg args: T): Priorit
 }
 
 fun Char.toIntValue() = code - '0'.code
+fun Char.toLongValue():Long = code.toLong() - '0'.code
