@@ -1,4 +1,6 @@
 import kotlin.math.abs
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 /*
  * Copyright (c) 2021 Keystone Strategic b.v.
@@ -28,3 +30,5 @@ fun manhattanDistance(a: TripleCoordinate, b: TripleCoordinate = tripleOrigin) =
 
 val tripleOrigin = TripleCoordinate(0, 0, 0)
 
+fun euclideanDistance(a: TripleCoordinate, b: TripleCoordinate = tripleOrigin) =
+  sqrt((a.x - b.x).toDouble().pow(2)+(a.y - b.y).toDouble().pow(2)+(a.z - b.z).toDouble().pow(2))
