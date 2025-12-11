@@ -8,7 +8,6 @@ import java.io.BufferedReader
  */
 fun day06Part1(input: BufferedReader): Any {
   val groups = input.readLines().map { it.split("\\s+".toRegex()).filter { it.isNotEmpty() } }
-  println(groups)
   return (0..<groups.first().size).sumOf{ i->
     val operand = groups.last()[i]
     val start = when{
