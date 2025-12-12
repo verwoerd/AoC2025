@@ -1,3 +1,12 @@
+import org.gradle.api.DefaultTask
+import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.provider.Property
+import org.gradle.api.tasks.CacheableTask
+import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.InputDirectory
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
+import org.gradle.api.tasks.TaskAction
 import java.io.File
 import java.nio.file.FileSystems
 import java.nio.file.Files
@@ -9,11 +18,26 @@ import java.util.Locale
  * @author verwoerd
  * @since 08-11-20
  */
-object DayGenerator {
+@CacheableTask
+abstract class DayGeneratorTask : DefaultTask() {
+  @get:Input
+  abstract val authorBase: Property<String>
+
+  @get:InputDirectory
+  @get:PathSensitive(PathSensitivity.RELATIVE)
+  abstract val srcDir: DirectoryProperty
+
   private val moduleRegex = Regex("day(\\d\\d)")
 
   fun findLastDay(base: File): Int =
     base.list()!!.mapNotNull { moduleRegex.matchEntire(it) }.maxOfOrNull { it.groupValues[1].toInt() } ?: 0
+
+  @TaskAction
+  fun generate() {
+    val dir = srcDir.get().asFile
+    val author = authorBase.get()
+    createNextDay(dir, author)
+  }
 
   fun createNextDay(base: File, author: String) {
     val next = findLastDay(base).inc().toString().padStart(2, '0')

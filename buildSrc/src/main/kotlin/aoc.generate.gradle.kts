@@ -1,8 +1,9 @@
 val author: String by project
 
 tasks {
-  register("generateNextDay") {
+  register<DayGeneratorTask>("generateNextDay") {
     group = "aoc"
-    actions = listOf(Action { DayGenerator.createNextDay(project.projectDir, author) })
+    authorBase.set(author)
+    srcDir.set(layout.projectDirectory)
   }
 }
